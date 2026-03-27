@@ -10,337 +10,67 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #ff2e00;
-      --red: #ff2e00;
-      --red-dim: #ff2e00;
+      --bg: #000000;
       --red-bright: #ff2e00;
-      --rule: #1a1a1a;
+      /* Changed "dim" red to a lighter, softer red */
+      --red-light: #ff7a5c; 
+      /* This is the size for "Director" and all other body text */
+      --text-large: clamp(1.5rem, 4vw, 2.5rem); 
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
-      color: var(--red);
+      color: var(--red-light);
       font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
-      line-height: 1.7;
-      min-height: 100vh;
+      font-size: var(--text-large);
+      line-height: 1.4;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px; /* Large spacing between items */
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    /* scanline overlay */
+    /* Scanline effect */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.07) 2px,
-        rgba(0,0,0,0.07) 4px
-      );
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);
       pointer-events: none;
       z-index: 999;
     }
 
-    a { color: var(--red); text-decoration: none; }
-    a:hover { color: var(--red-bright); }
+    a { color: var(--red-light); text-decoration: none; border-bottom: 2px solid var(--red-light); }
+    a:hover { color: var(--red-bright); border-color: var(--red-bright); }
 
     /* ── Header ── */
-    header {
-      padding: 60px 40px 40px;
-      max-width: 900px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--rule);
-      opacity: 0;
-      animation: flicker 0.5s ease forwards 0.1s;
-    }
-
-    .prompt {
-      color: var(--red-dim);
-      font-size: 11px;
-      margin-bottom: 10px;
-    }
-
+    header { border-bottom: 2px solid #1a1a1a; padding-bottom: 40px; }
+    
     .name {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height: 1;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.9;
       color: var(--red-bright);
-      text-shadow: 0 0 40px rgba(255,46,0,0.2);
+      text-transform: uppercase;
+      margin-bottom: 20px;
     }
 
     .tagline {
-      color: var(--red-dim);
-      font-size: 11px;
-      margin-top: 12px;
-      letter-spacing: 0.08em;
+      font-size: var(--text-large);
+      color: var(--red-bright);
+      font-weight: bold;
     }
 
-    nav {
-      margin-top: 28px;
-      display: flex;
-      gap: 28px;
-    }
+    /* ── Content Blocks ── */
+    .content-block { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+    
+    .label { font-size: 14px; color: #444; text-transform: uppercase; letter-spacing: 2px; }
 
-    nav a {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--red-dim);
-      transition: color 0.15s;
-    }
-
-    nav a::before { content: './'; }
-    nav a:hover { color: var(--red-bright); }
-
-    /* ── Sections ── */
-    section {
-      padding: 56px 40px;
-      max-width: 900px;
-      margin: 0 auto;
-      border-bottom: 1px solid var(--rule);
-      opacity: 0;
-      animation: flicker 0.5s ease forwards;
-    }
-
-    section:nth-child(2) { animation-delay: 0.2s; }
-    section:nth-child(3) { animation-delay: 0.3s; }
-    section:nth-child(4) { animation-delay: 0.4s; }
-
-    .section-label {
-      font-size: 10px;
-      letter-spacing: 0.28em;
-      color: var(--red-dim);
-      text-transform: uppercase;
-      margin-bottom: 36px;
-    }
-
-    .section-label::before { content: '// '; }
-
-    /* ── Reels ── */
-    .reels-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .reel-title {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--red-dim);
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-
-    .reel-title::before { content: '> '; }
-
+    /* ── Video Styling ── */
     .video-wrap {
       position: relative;
       width: 100%;
       padding-top: 56.25%;
       background: #080808;
-      border: 1px solid var(--rule);
-      overflow: hidden;
-    }
-
-    .video-wrap iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    /* ── PDFs ── */
-    .pdfs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-    }
-
-    .pdf-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 22px 24px;
-      border: 1px solid var(--rule);
-      color: var(--red);
-      text-decoration: none;
-      transition: background 0.12s, color 0.12s;
-    }
-
-    .pdf-card:hover {
-      background: var(--red);
-      color: #000;
-    }
-
-    .pdf-card:hover .pdf-sub,
-    .pdf-card:hover .pdf-arrow { color: #000; }
-
-    .pdf-name { font-size: 12px; letter-spacing: 0.05em; }
-    .pdf-name::before { content: '[ '; }
-    .pdf-name::after  { content: ' ]'; }
-
-    .pdf-sub {
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: var(--red-dim);
-      margin-top: 3px;
-      text-transform: uppercase;
-      transition: color 0.12s;
-    }
-
-    .pdf-arrow { color: var(--red-dim); transition: color 0.12s; }
-
-    .pdf-note {
-      font-size: 10px;
-      color: var(--red-dim);
-      margin-top: 20px;
-    }
-
-    .pdf-note::before { content: '/* '; }
-    .pdf-note::after  { content: ' */'; }
-
-    /* ── Contact ── */
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 32px;
-    }
-
-    .contact-label {
-      font-size: 9px;
-      letter-spacing: 0.25em;
-      color: var(--red-dim);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .contact-label::before { content: '$ '; }
-
-    .contact-link {
-      font-size: 12px;
-      color: var(--red);
-      border-bottom: 1px solid var(--rule);
-      padding-bottom: 2px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .contact-link:hover {
-      color: var(--red-bright);
-      border-color: var(--red-bright);
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 24px 40px;
-      max-width: 900px;
-      margin: 0 auto;
-      font-size: 10px;
-      color: var(--red-dim);
-    }
-
-    footer::before { content: '// '; }
-
-    /* ── Animation ── */
-    @keyframes flicker {
-      0%   { opacity: 0; }
-      60%  { opacity: 0.85; }
-      75%  { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      header, section, footer { padding-left: 20px; padding-right: 20px; }
-      .reels-grid, .pdfs-grid, .contact-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <div class="prompt">~/portfolio $</div>
-    <div class="name">JASON MOLLINK</div>
-    <div class="tagline">DIRECTOR_</div>
-    <nav>
-      <a href="#showreels">showreels</a>
-      <a href="#portfolio">portfolio</a>
-      <a href="#contact">contact</a>
-    </nav>
-  </header>
-
-  <section id="showreels">
-    <div class="section-label">Showreels</div>
-    <div class="reels-grid">
-
-      <div>
-        <div class="reel-title">Film Showreel</div>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube.com/embed/OCEEMHFYaZY"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen loading="lazy" title="Film Showreel">
-          </iframe>
-        </div>
-      </div>
-
-      <div>
-        <div class="reel-title">Content Showreel</div>
-        <div class="video-wrap">
-          <iframe
-            src="https://www.youtube.com/embed/c93jEkLdAPc"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen loading="lazy" title="Content Showreel">
-          </iframe>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section id="portfolio">
-    <div class="section-label">Portfolio</div>
-    <div class="pdfs-grid">
-
-      <a class="pdf-card" href="photography-portfolio.pdf" target="_blank">
-        <div>
-          <div class="pdf-name">Photography Portfolio</div>
-          <div class="pdf-sub">open pdf</div>
-        </div>
-        <span class="pdf-arrow">→</span>
-      </a>
-
-      <a class="pdf-card" href="writing-portfolio.pdf" target="_blank">
-        <div>
-          <div class="pdf-name">Writing Portfolio</div>
-          <div class="pdf-sub">open pdf</div>
-        </div>
-        <span class="pdf-arrow">→</span>
-      </a>
-
-    </div>
-    <p class="pdf-note">upload your PDFs as: photography-portfolio.pdf &amp; writing-portfolio.pdf</p>
-  </section>
-
-  <section id="contact">
-    <div class="section-label">Contact</div>
-    <div class="contact-grid">
-
-      <div>
-        <div class="contact-label">email</div>
-        <a class="contact-link" href="mailto:jason.mollink@gmail.com">jason.mollink@gmail.com</a>
-      </div>
-
-      <div>
-        <div class="contact-label">linkedin</div>
-        <a class="contact-link" href="https://www.linkedin.com/in/jason-mollink-a73b09319/" target="_blank">jason-mollink</a>
-      </div>
-
-    </div>
-  </section>
-
-  <footer>2026 Jason Mollink — Director</footer>
-
-</body>
-</html>
+      border: 1px
